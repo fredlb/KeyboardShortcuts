@@ -307,7 +307,7 @@ public enum KeyboardShortcuts {
 	public static func getShortcut(for name: Name) -> Shortcut? {
         if storageProvider != nil {
             guard
-                let data = storageProvider?.get(forKey: userDefaultsKey(for: name))?.data(using: .utf8),
+                let data = storageProvider?.get(forKey: name.rawValue)?.data(using: .utf8),
                 let decoded = try? JSONDecoder().decode(Shortcut.self, from: data)
             else {
                 return nil

@@ -306,10 +306,13 @@ public enum KeyboardShortcuts {
 	*/
 	public static func getShortcut(for name: Name) -> Shortcut? {
         if storageProvider != nil {
-            guard let shortcut: Shortcut? = storageProvider?.get(forKey: name.rawValue) else {
+            guard
+                let data = storageProvider?.get(forKey: userDefaultsKey(for: name))?.data(using: .utf8),
+                let decoded = try? JSONDecoder().decode(Shortcut.self, from: data)
+            else {
                 return nil
             }
-            return shortcut
+            return decoded
         }
         
         guard
@@ -479,13 +482,16 @@ public enum KeyboardShortcuts {
 	}
     
     static func storageProviderSet(name: Name, shortcut: Shortcut) {
+        guard let encoded = try? JSONEncoder().encode(shortcut).toString else {
+            return
+        }
 
         if let oldShortcut = getShortcut(for: name) {
             unregister(oldShortcut)
         }
 
         register(shortcut)
-        storageProvider?.set(shortcut, forKey: name.rawValue)
+        storageProvider?.set(encoded, forKey: name.rawValue)
         shortcutDidChange(name: name)
     }
 

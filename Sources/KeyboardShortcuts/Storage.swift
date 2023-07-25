@@ -8,8 +8,8 @@
 import Foundation
 
 public protocol StorageProvider {
-    func get(forKey defaultName: String) -> KeyboardShortcuts.Shortcut?
-    func getAll() -> [String:KeyboardShortcuts.Shortcut?]
-    mutating func set(_ value: KeyboardShortcuts.Shortcut?, forKey defaultName: String)
+    func get(forKey defaultName: String) -> String?
+    func getAll() -> [String:String?]
+    mutating func set(_ value: String?, forKey defaultName: String)
     mutating func remove(forKey defaultName: String)
 }

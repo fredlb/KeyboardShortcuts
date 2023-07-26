@@ -4,7 +4,7 @@ import AppKit.NSMenu
 Global keyboard shortcuts for your macOS app.
 */
 public enum KeyboardShortcuts {
-    private static var storageProvider: StorageProvider?
+    public static var storageProvider: StorageProvider?
 	private static var registeredShortcuts = Set<Shortcut>()
 
 	private static var legacyKeyDownHandlers = [Name: [() -> Void]]()
@@ -134,15 +134,11 @@ public enum KeyboardShortcuts {
 		// TODO: Should remove user defaults too.
 	}
 
-	static func initialize(customStorage: StorageProvider? = nil) {
+	static func initialize() {
 		guard !isInitialized else {
 			return
 		}
         
-        if customStorage != nil {
-            self.storageProvider = customStorage
-        }
-
 		openMenuObserver = NotificationCenter.default.addObserver(forName: NSMenu.didBeginTrackingNotification, object: nil, queue: nil) { _ in
 			isMenuOpen = true
 		}

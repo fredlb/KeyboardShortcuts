@@ -40,7 +40,7 @@ extension KeyboardShortcuts {
             
             if
                 let initialShortcut,
-                !userDefaultsContains(name: self)
+                !storageProviderContains(name: self) // TODO: Make this use storage if set
             {
                 setShortcut(initialShortcut, for: self)
             }
